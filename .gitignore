@@ -1,0 +1,8 @@
+*.pth
+*.txt
+*.pyc
+*.pkl
+/experiment/modelzoo/*
+/experiment/result_model/*
+/data0/
+

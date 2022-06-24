@@ -17,7 +17,7 @@ AMMA is a real-time tubelet detector operating on lightweight 2D CNN backbones a
 Please refer to https://github.com/MCG-NJU/MOC-Detector for detailed instructions.
 
 ### 2. Train
-The current version of AMMA supports ResNet18, MobileNetV2, and ShuffleNetV2 as the feature extraction backbones. To proceed with training, first download the COCO pretrained weights in [Google Drive](https://drive.google.com/drive/folders/1r2uYo-4hL6oOzRARFsYIn5Pu2Lv7VS6m). COCO pretrained models come from [CenterNet](https://github.com/xingyizhou/CenterNet). Move pretrained models to ```${AMMA_ROOT}/experiment/modelzoo</mark>.```
+The current version of AMMA supports ResNet18, MobileNetV2, and ShuffleNetV2 as the feature extraction backbones. To proceed with training, first download the pretrained weights in [Google Drive](https://drive.google.com/drive/folders/1r2uYo-4hL6oOzRARFsYIn5Pu2Lv7VS6m) for ResNet18. COCO pretrained models come from [CenterNet](https://github.com/xingyizhou/CenterNet). Move pretrained models to ```${AMMA_ROOT}/experiment/modelzoo</mark>.```
 
 To train your own model, run the ```train.py``` script along with relevant input arguments. For instance:
 

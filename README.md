@@ -2,22 +2,22 @@
 Pytorch implementation of our "Accumulating Micro-Motion Representations for Lightweight Online Action Detection in Real-time" has been released.
 
 ## AMMA Overview
-we propose a lightweight action tubelet detector coined **TEDdet** which unifies complementary feature aggregation and motion modeling modules. Specifically, our Temporal Feature Exchange module facilitates feature interaction by aggregating action-specific visual patterns over successive frames, enabling spatiotemporal modeling on top of 2D CNN. To address actors' location shift in the sequence, our Temporal Feature Difference module approximates pair-wise motion among target frames in their abstract latent space. These modules can be easily integrated with an existing anchor-free detector (CenterNet) to cooperatively model action instances' categories, sizes and trajectories for precise tubelet generation. TEDdet exploits larger temporal strides to efficiently infer actions in a coarse-to-fine and online manner. 
+AMMA is a real-time tubelet detector operating on lightweight 2D CNN backbones and raw video clips. It adopts a coarse-level tubelet detection scheme, acquiring actions' spatiotemporal context by combining sparsely sampled visual cues and complementary dynamic cues across a wider temporal window. Due to the smoothness nature of continuous actions, our detector can efficiently infer temporally coarse action tubelets across a sparse set of frames while interpolating intra-frame detection. To explicitly encode short-term action dynamics in an efficient manner, we devise a simple yet effective motion representation by accumulating learnable motion boundaries over each video clip (referred to as "micro-motion"). In AMMA, micro-motion is computed on-the-fly from RGB frames, whose abstract features can then be adaptively fused with the appearance ones at multiple scales to produce temporal-aware features via 2D CNN. On top of its spatiotemporal backbone, AMMA aggregates multiple temporal-aware features from successive clips at its detector head, permitting long-range action modeling. AMMA is one of the few works primarily focusing on highly efficient action detection solutions for realistic deployment on low-end devices.
 
 ![alt text](https://github.com/alphadadajuju/TEDdet/blob/master/images/pipeline.jpg)
 
-* We present two lightweight temporal modeling modules: Temporal Feature Exchange (TE) and Temporal Feature Difference (TD) to facilitate learning action-specific spatiotemporal pattern and trajectory.
+* We propose a compact micro-motion representation to encode short-term action dynamics. Compensating for the low efficiency of traditional optical flow methods, our motion representation can be generated on-the-fly from video streams in real-time.
 
-* We propose TEDdet, an integrated action tubelet detector on top of 2D CenterNet and TE-TD plug-in. Our detector operates in a coarse-to-fine manner. Alongside the online tube generation algorithm, TEDdet's detection speed well exceeds real-time requirement (89 FPS).
+* We devise a lightweight action tubelet detector integrating 2D CNN backbones, micro-motion generation \& fusion, and cooperative detection branches. It adopts a coarse-to-fine detection paradigm to efficiently infer actions in online settings.
 
-* Comprehensive analysis in terms of TEDdet's accuracy, robustness, and efficiency are conducted on public UCF-24 and JHMDB-21 datasets. Without relying on any 3D CNN or optical flow, our action detector achieves competitive accuracy at an unprecedented speed, suggesting a much more feasible solution pertinent to realistic applications.
+* We tailor the proposed detection pipeline with three ultra-lightweight CNN backbones and validate their overall-superior performances in high precision, high speed, and low complexity on JHMDB-21 and UCF-24. 
 
-## TEDdet Usage
+## AMMA Usage
 ### 1. Installation and Dataset
 Please refer to https://github.com/MCG-NJU/MOC-Detector for detailed instructions.
 
 ### 2. Train
-The current version of TEDdet support ResNet18 as the feature extraction backbone. To proceed with training, first download the COCO pretrained weights in [Google Drive](https://drive.google.com/drive/folders/1r2uYo-4hL6oOzRARFsYIn5Pu2Lv7VS6m). COCO pretrained models come from [CenterNet](https://github.com/xingyizhou/CenterNet). Move pretrained models to ```${TEDdet_ROOT}/experiment/modelzoo</mark>.```
+The current version of AMMA supports ResNet18, MobileNetV2, and ShuffleNetV2 as the feature extraction backbones. To proceed with training, first download the COCO pretrained weights in [Google Drive](https://drive.google.com/drive/folders/1r2uYo-4hL6oOzRARFsYIn5Pu2Lv7VS6m). COCO pretrained models come from [CenterNet](https://github.com/xingyizhou/CenterNet). Move pretrained models to ```${AMMA_ROOT}/experiment/modelzoo</mark>.```
 
 To train your own model, run the ```train.py``` script along with relevant input arguments. For instance:
 

@@ -4,13 +4,15 @@ Pytorch implementation of our "Accumulating Micro-Motion Representations for Lig
 ## AMMA Overview
 AMMA is a real-time tubelet detector operating on lightweight 2D CNN backbones and raw video clips. It adopts a coarse-level tubelet detection scheme, acquiring actions' spatiotemporal context by combining sparsely sampled visual cues and complementary dynamic cues across a wider temporal window. Due to the smoothness nature of continuous actions, our detector can efficiently infer temporally coarse action tubelets across a sparse set of frames while interpolating intra-frame detection. To explicitly encode short-term action dynamics in an efficient manner, we devise a simple yet effective motion representation by accumulating learnable motion boundaries over each video clip (referred to as "micro-motion"). In AMMA, micro-motion is computed on-the-fly from RGB frames, whose abstract features can then be adaptively fused with the appearance ones at multiple scales to produce temporal-aware features via 2D CNN. On top of its spatiotemporal backbone, AMMA aggregates multiple temporal-aware features from successive clips at its detector head, permitting long-range action modeling. AMMA is one of the few works primarily focusing on highly efficient action detection solutions for realistic deployment on low-end devices.
 
-![alt text](https://github.com/alphadadajuju/TEDdet/blob/master/images/pipeline.jpg)
+![alt text](https://github.com/alphadadajuju/AMMA/blob/master/images/pipeline.jpg)
 
 * We propose a compact micro-motion representation to encode short-term action dynamics. Compensating for the low efficiency of traditional optical flow methods, our motion representation can be generated on-the-fly from video streams in real-time.
 
 * We devise a lightweight action tubelet detector integrating 2D CNN backbones, micro-motion generation \& fusion, and cooperative detection branches. It adopts a coarse-to-fine detection paradigm to efficiently infer actions in online settings.
 
 * We tailor the proposed detection pipeline with three ultra-lightweight CNN backbones and validate their overall-superior performances in high precision, high speed, and low complexity on JHMDB-21 and UCF-24. 
+
+![alt text](https://github.com/alphadadajuju/AMMA/blob/master/images/micro_motion_examples.jpg)
 
 ## AMMA Usage
 ### 1. Installation and Dataset

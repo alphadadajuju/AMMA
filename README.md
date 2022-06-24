@@ -17,30 +17,29 @@ AMMA is a real-time tubelet detector operating on lightweight 2D CNN backbones a
 Please refer to https://github.com/MCG-NJU/MOC-Detector for detailed instructions.
 
 ### 2. Train
-The current version of AMMA supports ResNet18, MobileNetV2, and ShuffleNetV2 as the feature extraction backbones. To proceed with training, first download the pretrained weights in [Google Drive](https://drive.google.com/drive/folders/1r2uYo-4hL6oOzRARFsYIn5Pu2Lv7VS6m) for ResNet18. COCO pretrained models come from [CenterNet](https://github.com/xingyizhou/CenterNet). Move pretrained models to ```${AMMA_ROOT}/experiment/modelzoo</mark>.```
+The current version of AMMA supports ResNet18, MobileNetV2, and ShuffleNetV2 as the feature extraction backbones. To proceed with training, first download the pretrained weights in [CenterNet](https://drive.google.com/drive/folders/1r2uYo-4hL6oOzRARFsYIn5Pu2Lv7VS6m) for ResNet18, [SSDLite](https://github.com/Andrew-Qibin/ssdlite-pytorch-mobilenext) for MobileNetV2, and [ShuffleNetV2](https://github.com/ericsun99/Shufflenet-v2-Pytorch) for ShuffleNetV2. Note that the first two models are pretrained from COCO, while the last one is pretrained from ImageNet. Move downloaded pretrained models to ```${AMMA_ROOT}/experiment/modelzoo</mark>.```
 
-To train your own model, run the ```train.py``` script along with relevant input arguments. For instance:
+To train your own model, run the ```train.py``` script along with relevant input arguments. For instance, to train a model which incorporates micro-motion (mm):
 
 ```
-$python train.py --K 5 --exp_id K5_model --rgb_model TED_K5 --batch_size 16 --master_batch 16 --lr 2.5e-4 --gpus 0 --num_worker 16 --num_epochs 10 --lr_step 5 --dataset hmdb --split 1 --down_ratio 8 --lr_drop 0.1 --ninput 1 --ninputrgb 5 --auto_stop --pretrain coco 
+$python train.py --K 5 --exp_id K5_model --mm_model AMMA_K5 --batch_size 16 --master_batch 16 --lr 2.5e-4 --gpus 0 --num_worker 16 --num_epochs 16 --lr_step 8 --dataset hmdb --split 1 --down_ratio 8 --lr_drop 0.1 --ninput 5 --ninputrgb 5 --auto_stop --pretrain coco 
 ```
-
-Note that by setting ```--auto_save```, a validation step will be carried out at the end of each training epoch in order to save the best-performing model (i.e., model_best.pth). Instead, using ```--save_all``` will save every epoch's training model. For more details on possible input arguments, refer to ```${TEDdet_ROOT}/src/opts.py.```
+One can also exclude micro-motion by training a ```--rgb_model``` (in that case, make sure to set ```ninput``` to 1). In addition, note that by setting ```--auto_save```, a validation step will be carried out at the end of each training epoch in order to save the best-performing model (i.e., model_best.pth). Instead, using ```--save_all``` will save every epoch's training model. For more details on possible input arguments, refer to ```${TEDdet_ROOT}/src/opts.py.```
 
 ### 3. Evaluation
 To evaluate a trained model, one performs two sequential steps from the ```det.py``` and ```ACT.py``` scripts. The former performs model inference and saves detection results (i.e., .pkl) accordingly. The latter loads the detection results and evaluates them based on designated metrics. For instance:
 
 #### Model inference 
 ```
-$python det.py --task stream --K 5 --gpus 0 --batch_size 1 --master_batch 1 --num_workers 1 --rgb_model TED_K5/model_best.pth --inference_dir ../data0/TED_K5_stream --ninput 1 --dataset hmdb --split 1 --down_ratio 8 --ninputrgb 5 
+$python det.py --task stream --K 5 --gpus 0 --batch_size 1 --master_batch 1 --num_workers 1 --mm_model AMMA_K5/model_best.pth --inference_dir ../data0/AMMA_K5_stream --ninput 5 --dataset hmdb --split 1 --down_ratio 8 --ninputrgb 5 
 ```
 
-Note that TEDdet supports two inference modes: normal and stream mode. Stream mode takes into account a FIFO-based feature-caching mechanism to more efficiently process incoming video frames (the reported speed in the article corresponds to this mode). The mode needs to be specified explicitly during both inference and evaluation.
+Note that AMMA supports two inference modes: normal and stream mode. Stream mode takes into account a FIFO-based feature-caching mechanism to more efficiently process incoming video frames (the reported speed in the article corresponds to this mode). The mode needs to be specified explicitly during both inference and evaluation.
 
 #### Evaluating mAP
 
 ```
-$python ACT.py --task frameAP --K 5 --th 0.5 --inference_dir ../data0/TED_K5_stream --dataset hmdb --split 1 --evaluation_model trimmed --inference_mode stream --ninputrgb 5
+$python ACT.py --task frameAP --K 5 --th 0.5 --inference_dir ../data0/AMMA_K5_stream --dataset hmdb --split 1 --evaluation_model trimmed --inference_mode stream --ninput 5 --ninputrgb 5
 ```
 To compute videoAP, one needs to additionally generate action tubes using ACT.py by first configuring ```--task``` to ```BuildTubes``` and then evaluate ```videoAP```.
 

@@ -19,7 +19,7 @@ AMMA is a real-time tubelet detector operating on lightweight 2D CNN backbones a
 Please refer to https://github.com/MCG-NJU/MOC-Detector for detailed instructions.
 
 ### 2. Train
-The current version of AMMA supports ResNet18, MobileNetV2, and ShuffleNetV2 as the feature extraction backbones. To proceed with training, first download the pretrained weights in [CenterNet](https://drive.google.com/drive/folders/1r2uYo-4hL6oOzRARFsYIn5Pu2Lv7VS6m) for ResNet18, [SSDLite](https://github.com/Andrew-Qibin/ssdlite-pytorch-mobilenext) for MobileNetV2, and [ShuffleNetV2](https://github.com/ericsun99/Shufflenet-v2-Pytorch) for ShuffleNetV2. Note that the first two models are pretrained from COCO, while the last one is pretrained from ImageNet. Move downloaded pretrained models to ```${AMMA_ROOT}/experiment/modelzoo</mark>.```
+The current version of AMMA supports ResNet18, MobileNetV2, and ShuffleNetV2 as the feature extraction backbones. To proceed with training, first download the pretrained weights in [CenterNet](https://drive.google.com/drive/folders/1r2uYo-4hL6oOzRARFsYIn5Pu2Lv7VS6m) for ResNet18, [SSDLite](https://github.com/Andrew-Qibin/ssdlite-pytorch-mobilenext) for MobileNetV2, and [ShuffleNetV2](https://github.com/ericsun99/Shufflenet-v2-Pytorch) for ShuffleNetV2. Note that the first two models are pretrained from COCO, while the last one is pretrained from ImageNet. Move downloaded pretrained models to ```${AMMA_ROOT}/experiment/modelzoo/.```
 
 To train your own model, run the ```train.py``` script along with relevant input arguments. For instance, to train a model which incorporates micro-motion (mm):
 
